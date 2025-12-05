@@ -68,7 +68,7 @@ p_t(\mathbf{x}) = \int p_t(\mathbf{x}\,\vert\, \mathbf{x}_0, \mathbf{x}_1, \math
 $$
 
 with
-$$p_t(\mathbf{x}\,\vert\, \mathbf{x}_0, \mathbf{x}_1, \mathbf{z}) = \delta(\mathbf{x} - \mathbf{I}(t, \mathbf{x}_0, \mathbf{x}_1) + \gamma(t)\mathbf{z})$$
+$$p_t(\mathbf{x}\,\vert\, \mathbf{x}_0, \mathbf{x}_1, \mathbf{z}) = \delta(\mathbf{x} - (\mathbf{I}(t, \mathbf{x}_0, \mathbf{x}_1) + \gamma(t)\mathbf{z}))$$
 and
 $$p_\mathcal{N}(\mathbf{z}) = \mathcal{N}(\mathbf{z}; \mathbf{0}, 1).$$ Although this formulation of $$p_t$$ might look intimidating at first, drawing samples from it is straightforward. We can sample $$\mathbf{x}_t \sim p_t$$ by drawing $$\mathbf{x}_0 \sim p_0$$, $$\mathbf{x}_1 \sim p_1$$, and $$\mathbf{z} \sim \mathcal{N}(\mathbf{0}, 1)$$, then setting
 $$\mathbf{x}_t = \mathbf{I}(t, \mathbf{x}_0, \mathbf{x}_1) + \gamma(t)\mathbf{z}.$$
@@ -279,7 +279,7 @@ The last term, $$c_1$$, is independent of $$\boldsymbol{\theta}$$ and therefore 
 \mathrm{d}\mathbf{x}\, \mathrm{d}t$$
 $$
 - 2 \int \mathbf{b}_{\boldsymbol{\theta}}(\mathbf{x}, t)^\top
-\underbrace{\int \partial_t \mathbf{b}_t(\mathbf{x}\,\vert\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})
+\underbrace{\int \mathbf{b}_t(\mathbf{x}\,\vert\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})
 \frac{p_t(\mathbf{x}\,|\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})\, p_0(\mathbf{x}_0)\, p_1(\mathbf{x}_1)\, p_\mathcal{N}(\mathbf{z})}{p_t(\mathbf{x})}\,
 \mathrm{d}\mathbf{x}_0\, \mathrm{d}\mathbf{x}_1\, \mathrm{d}\mathbf{z}}_{\mathbf{b}_t(\mathbf{x})} \,
 p_t(\mathbf{x})\, \mathrm{d}\mathbf{x}\, \mathrm{d}t + c_1.
@@ -294,13 +294,13 @@ p_t(\mathbf{x}\,|\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})\, p_0(\mathbf{x}_0)\,
 $$
 
 $$
-\textcolor{blue}{- 2} \int \textcolor{blue}{\mathbf{b}_{\boldsymbol{\theta}}(\mathbf{x}, t)^\top \partial_t \mathbf{b}_t(\mathbf{x}\,\vert\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})}\,
+\textcolor{blue}{- 2} \int \textcolor{blue}{\mathbf{b}_{\boldsymbol{\theta}}(\mathbf{x}, t)^\top \mathbf{b}_t(\mathbf{x}\,\vert\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})}\,
 p_t(\mathbf{x}\,|\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})\, p_0(\mathbf{x}_0)\, p_1(\mathbf{x}_1)\, p_\mathcal{N}(\mathbf{z})\,
 \mathrm{d}\mathbf{x}_0\, \mathrm{d}\mathbf{x}_1\, \mathrm{d}\mathbf{z}\, \mathrm{d}\mathbf{x}\, \mathrm{d}t
 $$
 
 $$
-+ \underbrace{\int \textcolor{blue}{\|\partial_t \mathbf{b}_t(\mathbf{x}\,\vert\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})\|^2}\,
++ \underbrace{\int \textcolor{blue}{\|\mathbf{b}_t(\mathbf{x}\,\vert\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})\|^2}\,
 p_t(\mathbf{x}\,|\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})\, p_0(\mathbf{x}_0)\, p_1(\mathbf{x}_1)\, p_\mathcal{N}(\mathbf{z})\,
 \mathrm{d}\mathbf{x}_0\, \mathrm{d}\mathbf{x}_1\, \mathrm{d}\mathbf{z}\, \mathrm{d}\mathbf{x}\, \mathrm{d}t}_{c_2}
 + c_1 - c_2.$$
@@ -311,14 +311,14 @@ Combining the terms highlighted in blue, we obtain:
 
 <div class="l-body-outset">
   <p>$$ \min_{\boldsymbol{\theta}} \int
-\textcolor{blue}{\|\partial_t \mathbf{b}_t(\mathbf{x}\,\vert\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z}) - \mathbf{b}_{\boldsymbol{\theta}}(\mathbf{x}, t)\|^2}\,
+\textcolor{blue}{\|\mathbf{b}_t(\mathbf{x}\,\vert\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z}) - \mathbf{b}_{\boldsymbol{\theta}}(\mathbf{x}, t)\|^2}\,
 p_t(\mathbf{x}\,|\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})\, p_0(\mathbf{x}_0)\, p_1(\mathbf{x}_1)\, p_\mathcal{N}(\mathbf{z})\,
 \mathrm{d}\mathbf{x}_0\, \mathrm{d}\mathbf{x}_1\, \mathrm{d}\mathbf{z}\, \mathrm{d}\mathbf{x}\, \mathrm{d}t
 + c_1 - c_2.$$
 </p>
 </div>
 
-Finally, we can express this as an expectation and substitute the definition of the partial velocity field $$\partial_t \mathbf{b}_t(\mathbf{x}\,\vert\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})$$:
+Finally, we can express this as an expectation and substitute the definition of the partial velocity field $$\mathbf{b}_t(\mathbf{x}\,\vert\,\mathbf{x}_0, \mathbf{x}_1, \mathbf{z})$$:
 
 $$
 \min_{\boldsymbol{\theta}} \underset{\substack{
